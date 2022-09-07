@@ -7,13 +7,13 @@ from PyQt5.Qt import QByteArray
 from PyQt5.QtGui  import QImage, QPixmap
 import array
 from copy import copy
-from os.path import exists
+from pathlib import Path
 
 # Stable Diffusion Plugin fpr Krita
 # (C) 2022, Nicolay Mausz
 # MIT License
 #
-rPath= Krita.instance().readSetting("","ResourceDirectory","")
+rPath= Path(Krita.instance().readSetting("","ResourceDirectory",""))
 
 class ModifierData:    
     list=[]
@@ -27,11 +27,11 @@ class ModifierData:
         self.tags=obj["tags"]
     def save(self):
         str=self.serialize(self)
-        with open(rPath+"/krita_ai_modifiers.config", 'w', encoding='utf-8') as f_out:
+        with open(rPath / "krita_ai_modifiers.config", 'w', encoding='utf-8') as f_out:
             f_out.write(str)
     def load(self):
-        if (not exists(rPath+"/krita_ai_modifiers.config")): return
-        with open(rPath+"/krita_ai_modifiers.config", 'r', encoding='utf-8') as f_in:
+        if (not (rPath / "krita_ai_modifiers.config").exists()): return
+        with open(rPath / "krita_ai_modifiers.config", 'r', encoding='utf-8') as f_in:
             str=f_in.read()
         self.unserialize(self,str)    
 
@@ -75,11 +75,11 @@ class SDConfig:
         self.height=obj.get("height",512)
     def save(self):
         str=self.serialize(self)
-        with open(rPath+"/krita_ai.config", 'w', encoding='utf-8') as f_out:
+        with open(rPath / "krita_ai.config", 'w', encoding='utf-8') as f_out:
             f_out.write(str)
     def load(self):
-        if (not exists(rPath+"/krita_ai.config")): return
-        with open(rPath+"/krita_ai.config", 'r', encoding='utf-8') as f_in:
+        if (not (rPath / "krita_ai.config").exists()): return
+        with open(rPath / "krita_ai.config", 'r', encoding='utf-8') as f_in:
             str=f_in.read()
         self.unserialize(self,str)
 
